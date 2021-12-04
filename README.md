@@ -6,7 +6,7 @@ python keras_retinanet/bin/train.py --random-transform --image-max-side [ukuran 
 ```
 
 # Folder: Utilities
-Berisi modul-modul **python** yang digunakan untuk melakukan pemrosesan data. Rincian tiap file:
+Berisi modul-modul **Python** yang digunakan untuk melakukan pemrosesan data. Rincian tiap file:
 - `batch_rename.py`: Untuk mengganti nama banyak file dalam satu folder secara bersamaan.
 ```shell
 python batch_rename.py --dir [path berisi file] --ext [tipe file] --name [nama file hasil rename]
