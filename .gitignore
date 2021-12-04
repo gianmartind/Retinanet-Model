@@ -24,3 +24,6 @@ keras-retinanet/*.cover
 
 # Trained model snapshots
 keras-retinanet/trained_model/
+
+# Dataset folder
+Dataset/
