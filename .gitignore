@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+keras-retinanet/__pycache__/
+keras-retinanet/*.py[cod]
+keras-retinanet/*$py.class
+
+# Distribution / packaging
+keras-retinanet/.Python
+keras-retinanet/build/
+keras-retinanet/dist/
+keras-retinanet/eggs/
+keras-retinanet/*-eggs/
+keras-retinanet/.eggs/
+keras-retinanet/sdist/
+keras-retinanet/wheels/
+keras-retinanet/*.egg-info/
+keras-retinanet/.installed.cfg
+keras-retinanet/*.egg
+
+# Unit test / coverage reports
+keras-retinanet/.coverage
+keras-retinanet/.coverage.*
+keras-retinanet/coverage.xml
+keras-retinanet/*.cover
+
+# Trained model snapshots
+keras-retinanet/trained_model/

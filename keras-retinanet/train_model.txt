@@ -1,0 +1,1 @@
+python keras_retinanet/bin/train.py --random-transform --image-max-side 512 --compute-val-loss --epoch 50 --tensorboard-dir trained_model/ --snapshot-path trained_model/Dataset/snapshots pascal ..\Dataset\ 
