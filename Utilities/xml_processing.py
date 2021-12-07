@@ -7,70 +7,79 @@ Created on Fri Nov 26 14:36:48 2021
 
 #%% required libraries
 from os import listdir
-from os.path import isfile, join
-from os import chdir
 import xml.etree.ElementTree as ET
 
 import pandas as pd 
-from dfply import *
+import argparse
 
 from shutil import copyfile
 
 #%% read all files in directory folder
-def get_files(directory, file_ext):
+def get_files(directory, file_ext='.xml'):
     #directory = r"E:\Kuliah\Proyek Data Science\#_PROYEK\Retinanet-Tutorial\Dataset_2\JPEGImages"
     files = [f for f in listdir(directory) if f.endswith(file_ext)]
-    return files
+    return files, directory
 
-#%%
-path = 'Dataset\\Sedan\\'
-path_xml = path + 'Annotations\\'
-path_jpeg = path + 'JPEGImages\\'
-xmls = get_files(path_xml, '.xml')
+def get_xml_dict(xmls, path_xml):
+    xml_dict = dict()
+    for i in xmls:
+        class_count = dict()
+        xml = ET.parse(path_xml+i).getroot()
+        for x in xml.findall('object'):
+            class_name = x.find('name').text
+            if class_name not in class_count.keys():
+                class_count[class_name] = 1
+            else:
+                class_count[class_name] = class_count[class_name] + 1
+        xml_dict[i] = class_count
+    return xml_dict
 
-#%%
-xml_dict = dict()
-for i in xmls:
-    class_counter = {'sedan' : 0,
-                     'motor' : 0,
-                     'mobil' : 0}
-    xml = ET.parse(path_xml+i).getroot()
-    for x in xml.findall('object'):
-        if x.find('name').text == 'sedan':
-            class_counter['sedan'] = class_counter['sedan'] + 1
-        elif x.find('name').text == 'mobil':
-            class_counter['mobil'] = class_counter['mobil'] + 1
-        elif x.find('name').text == 'motor':
-            class_counter['motor'] = class_counter['motor'] + 1
-    xml_dict[i] = class_counter
+def get_class_set(xml_dict):
+    class_set = set()
+    for key, item in xml_dict.items():
+        for k in item.keys():
+            class_set.add(k)
+    return class_set
+
+def get_class_count(directory):
+    df_xml = pd.DataFrame(columns=['xml'])
     
-#%% 
-key_list = list(xml_dict.keys())
-sedan_list = [xml_dict[x]['sedan'] for x in key_list]
-mobil_list = [xml_dict[x]['mobil'] for x in key_list]
-motor_list = [xml_dict[x]['motor'] for x in key_list]
-
-#%%
-df_xml = pd.DataFrame()
-df_xml['xml'] = key_list
-df_xml['sedan'] = sedan_list
-df_xml['mobil'] = mobil_list
-df_xml['motor'] = motor_list
-
-df_summ = (df_xml
-           >> summarize(total_sedan=X.sedan.sum(), total_mobil=X.mobil.sum(), total_motor=X.motor.sum()))
-
-#%%
-contain_sedan = (df_xml
-                  >> filter_by(X.sedan != 0)
-                  >> select(X.xml))
-
-sedan_filenames = [f[0:-4] for f in contain_sedan['xml']]
-
-#%%
-for i in sedan_filenames:
-    copyfile(path_xml+i+'.xml', 'Sedan\\Annotations\\'+i+'.xml')
+    xmls_directory = get_files(directory)
+    xmls = xmls_directory[0]
+    directory = xmls_directory[1]
     
-for i in sedan_filenames:
-    copyfile(path_jpeg+i+'.jpg', 'Sedan\\JPEGImages\\'+i+'.jpg')
+    xml_dict = get_xml_dict(xmls ,directory)
+    class_set = get_class_set(xml_dict)
+    
+    for i in class_set:
+        df_xml[i] = list()
+    
+    for key, val in xml_dict.items():
+        to_append = val
+        to_append['xml'] = key
+        df_xml = df_xml.append(to_append, ignore_index=True)
+    
+    df_xml = df_xml.fillna(0)
+    
+    return df_xml
+
+#%%
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='class count')
+    parser.add_argument('--dir', help='file dir', default=None)
+    parser.add_argument('--filename', help='file name', default='class_count')
+    
+    args = parser.parse_args()
+    directory = args.dir
+    filename = args.filename
+    
+    print('Directory:', directory)
+
+    if directory[-1] != '/':
+        directory = directory + '/'
+        
+    xml_class_count = get_class_count(directory)
+    xml_class_count.to_csv(filename+'.csv', index=False)
+    print('{} generated.'.format('\'' + filename+'.csv\''))
+
 

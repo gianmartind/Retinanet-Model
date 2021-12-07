@@ -49,8 +49,6 @@ def create_imagesets(files, train, val):
         print('created trainval.txt')
 
 if __name__ == '__main__':
-    print(sys.argv)
-
     parser = argparse.ArgumentParser(description='batch rename.')
     parser.add_argument('--dir', help='file dir', default=None)
     parser.add_argument('--ext', help='file extension', default='.jpg')
