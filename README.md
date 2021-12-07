@@ -16,7 +16,10 @@ python batch_rename.py --dir [path berisi file] --ext [tipe file] --name [nama f
   - `val.txt`: berisi nama *file* yang digunakan untuk *validation* (*test*)
   - `trainval.txt`: berisi seluruh nama *file*
 ```shell
-python make_dataset.py --dir [path berisi file] --ext [tipe file] --
+python make_dataset.py --dir [path berisi file] --ext [tipe file] --ratio [persentase data train]
 ```
 - `detect_image.py`: Untuk mendeteksi objek pada gambar masukkan dengan menggunakan model yang sudah dihasilkan. Sudah diimplementasi pada PL.
-- `xml_processing.py`: Untuk menghitung jumlah tiap kelas pada label di dataset (file .xml).
+- `xml_processing.py`: Untuk menghitung jumlah tiap kelas pada label di dataset (file .xml). Menghasilkan file .csv berisi jumlah kelas untuk tiap file label.
+```shell
+python xml_processing.py --dir [path file xml] --name [nama file csv yang dihasilkan]
+```
