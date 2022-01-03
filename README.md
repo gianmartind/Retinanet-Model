@@ -10,7 +10,7 @@ Berisi modul-modul **Python** yang digunakan untuk melakukan pemrosesan data. Ri
 #### `batch_rename.py` 
 Untuk mengganti nama banyak file dalam satu folder secara bersamaan. Menerima argumen: lokasi file, tipe file, dan nama file yang hasil penggantian nama. Nama file hasil rename akan dimulai dari 1 sesuai dengan urutan kemunculan file.
 ```shell
-python batch_rename.py --dir [path berisi file] --ext [tipe file] --name [nama file hasil rename]
+python batch_rename.py --dir [path berisi file] --ext [tipe file] --name [nama file hasil rename] -- start [nomor pertama dari file yang di-rename]
 ```
 #### `make_dataset.py` 
 Untuk membagi data menjadi *train* dan *validation*. Menghasilkan tiga buah file .txt: 
