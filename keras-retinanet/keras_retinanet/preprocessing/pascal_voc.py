@@ -30,7 +30,9 @@ except ImportError:
 voc_classes = {
     'motor'        : 0,
     'mobil'        : 1,
-    'sedan'        : 2
+    'sedan'        : 2,
+    'truk'         : 3,
+    'bus'          : 4
 }
 
 
